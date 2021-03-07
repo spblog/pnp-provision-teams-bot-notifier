@@ -16,9 +16,25 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.3" />
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.17.0" />
+    <PackageReference Include="Microsoft.Azure.KeyVault.Core" Version="3.0.5" />
+    <PackageReference Include="Microsoft.Bot.Builder" Version="4.12.0" />
     <PackageReference Include="Microsoft.Bot.Builder.Azure" Version="4.12.0" />
     <PackageReference Include="Microsoft.Bot.Builder.Integration.AspNet.Core" Version="4.12.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PnPNotifier.Common\PnPNotifier.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="manifest\dev\manifest.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="PowerShell -NoProfile -ExecutionPolicy unrestricted -file $(ProjectDir)manifest\build.ps1 -target $(ConfigurationName) -projectDir $(ProjectDir) -targetDir $(TargetDir)" />
+  </Target>
 
 </Project>

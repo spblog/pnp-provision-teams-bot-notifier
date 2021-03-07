@@ -2,17 +2,15 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Azure;
-using Microsoft.Bot.Builder.BotFramework;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
-using PnPNotifierBot.Bots;
+using PnPNotifier.Common.Notifications;
 using PnPNotifierBot.Cards.Handlers;
 using PnPNotifierBot.Cards.Managers;
 using PnPNotifierBot.Commands;
-using PnPNotifierBot.Common;
 using PnPNotifierBot.Config;
 
 namespace PnPNotifierBot
@@ -31,7 +29,7 @@ namespace PnPNotifierBot
         {
             services.AddControllers().AddNewtonsoftJson();
             services.AddSingleton<IBotFrameworkHttpAdapter, AdapterWithErrorHandler>();
-            services.AddTransient<IBot, PnPNotifier>();
+            services.AddTransient<IBot, Bots.PnPNotifier>();
             services.AddTransient<CommandsFactory>();
             services.AddTransient<CardsHandlerFactory>();
             services.AddScoped<NotificationsManager>();

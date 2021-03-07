@@ -1,8 +1,8 @@
 ﻿using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Teams;
 using Microsoft.Bot.Schema;
+using PnPNotifier.Common.Notifications;
 using PnPNotifierBot.Cards.Managers;
-using PnPNotifierBot.Common;
 using System.Threading;
 using System.Threading.Tasks;
 
