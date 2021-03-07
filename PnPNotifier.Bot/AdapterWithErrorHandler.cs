@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using PnPNotifier.Common.Config;
 
-namespace PnPNotifierBot
+namespace PnPNotifier.Bot
 {
     public class AdapterWithErrorHandler : BotFrameworkHttpAdapter
     {

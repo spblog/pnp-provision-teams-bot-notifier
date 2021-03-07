@@ -1,4 +1,4 @@
-﻿namespace PnPNotifierBot.Cards
+﻿namespace PnPNotifier.Bot.Cards
 {
     public enum CardType
     {

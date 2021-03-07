@@ -2,7 +2,7 @@
 using PnPNotifierBot.Common;
 using System.Collections.Generic;
 
-namespace PnPNotifierBot.Cards.Managers
+namespace PnPNotifier.Bot.Cards.Managers
 {
     public class ConfigureNotificationsCardManager
     {

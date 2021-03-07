@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Schema;
 using Newtonsoft.Json.Linq;
-using PnPNotifierBot.Cards;
-using PnPNotifierBot.Cards.Handlers;
-using PnPNotifierBot.Commands;
+using PnPNotifier.Bot.Cards;
+using PnPNotifier.Bot.Cards.Handlers;
+using PnPNotifier.Bot.Commands;
 
-namespace PnPNotifierBot.Bots
+namespace PnPNotifier.Bot.Bots
 {
     public class PnPNotifier : ActivityHandler
     {

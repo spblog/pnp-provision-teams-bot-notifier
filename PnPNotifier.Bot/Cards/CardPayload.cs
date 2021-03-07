@@ -1,6 +1,6 @@
 ﻿using PnPNotifierBot.Common;
 
-namespace PnPNotifierBot.Cards
+namespace PnPNotifier.Bot.Cards
 {
     public class CardPayload
     {

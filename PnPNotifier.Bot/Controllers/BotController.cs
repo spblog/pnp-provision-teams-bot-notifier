@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 
-namespace PnPNotifierBot.Controllers
+namespace PnPNotifier.Bot.Controllers
 {
     [Route("api/messages")]
     [ApiController]

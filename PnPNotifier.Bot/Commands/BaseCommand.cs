@@ -3,7 +3,7 @@ using Microsoft.Bot.Schema;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PnPNotifierBot.Commands
+namespace PnPNotifier.Bot.Commands
 {
     public abstract class BaseCommand
     {

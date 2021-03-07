@@ -2,11 +2,11 @@
 using Microsoft.Bot.Builder.Teams;
 using Microsoft.Bot.Schema;
 using PnPNotifier.Common.Notifications;
-using PnPNotifierBot.Cards.Managers;
+using PnPNotifier.Bot.Cards.Managers;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PnPNotifierBot.Commands
+namespace PnPNotifier.Bot.Commands
 {
     public class ConfigureNotificationsCommand : BaseCommand
     {

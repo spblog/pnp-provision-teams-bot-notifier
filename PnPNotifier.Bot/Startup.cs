@@ -9,11 +9,11 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using PnPNotifier.Common.Config;
 using PnPNotifier.Common.Notifications;
-using PnPNotifierBot.Cards.Handlers;
-using PnPNotifierBot.Cards.Managers;
-using PnPNotifierBot.Commands;
+using PnPNotifier.Bot.Cards.Handlers;
+using PnPNotifier.Bot.Cards.Managers;
+using PnPNotifier.Bot.Commands;
 
-namespace PnPNotifierBot
+namespace PnPNotifier.Bot
 {
     public class Startup
     {

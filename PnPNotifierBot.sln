@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PnPNotifierBot", "PnPNotifierBot.csproj", "{1B677E83-67FF-4732-958A-7A1292C279A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PnPNotifier.Bot", "PnPNotifier.Bot\PnPNotifier.Bot.csproj", "{1B677E83-67FF-4732-958A-7A1292C279A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PnPNotifier.Common", "..\PnPNotifier.Common\PnPNotifier.Common.csproj", "{FFDC3228-79EA-436D-B81C-CB5555454F44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PnPNotifier.Common", "PnPNotifier.Common\PnPNotifier.Common.csproj", "{FFDC3228-79EA-436D-B81C-CB5555454F44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PnPNotifier.Job", "..\PnPNotifier.Job\PnPNotifier.Job.csproj", "{4641D506-2326-4475-B6AB-C2DE015CAD5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PnPNotifier.Job", "PnPNotifier.Job\PnPNotifier.Job.csproj", "{4641D506-2326-4475-B6AB-C2DE015CAD5A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

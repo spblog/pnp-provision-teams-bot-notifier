@@ -3,7 +3,7 @@ using Microsoft.Bot.Schema;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PnPNotifierBot.Cards.Handlers
+namespace PnPNotifier.Bot.Cards.Handlers
 {
     public abstract class CardHandler
     {

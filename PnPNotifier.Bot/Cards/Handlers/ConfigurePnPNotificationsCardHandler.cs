@@ -2,12 +2,11 @@
 using Microsoft.Bot.Builder.Teams;
 using Microsoft.Bot.Schema;
 using PnPNotifier.Common.Notifications;
-using PnPNotifierBot.Cards.Managers;
-using PnPNotifierBot.Common;
+using PnPNotifier.Bot.Cards.Managers;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PnPNotifierBot.Cards.Handlers
+namespace PnPNotifier.Bot.Cards.Handlers
 {
     public class ConfigurePnPNotificationsCardHandler : CardHandler
     {
