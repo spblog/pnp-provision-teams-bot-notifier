@@ -10,6 +10,7 @@ using Microsoft.Bot.Builder.Azure;
 using Newtonsoft.Json;
 using PnPNotifier.Common.Notifications;
 using PnPNotifier.Common.Config;
+using PnPNotifier.Job.Notifications;
 
 namespace PnPNotifier.Job
 {
@@ -50,8 +51,6 @@ namespace PnPNotifier.Job
                 })
                 .ConfigureServices((context, services) => {
                     services.Configure<AzureAdCreds>(context.Configuration.GetSection(AzureAdCreds.SectionName));
-                    services.Configure<KeyVaultInfo>(context.Configuration.GetSection(KeyVaultInfo.SectionName));
-                    services.Configure<KeyVaultInfo>(context.Configuration.GetSection(KeyVaultInfo.SectionName));
                     services.Configure<BotCredentials>(context.Configuration.GetSection(BotCredentials.SectionName));
 
                     var cosmosConfig = context.Configuration.GetSection("CosmosDb").Get<CosmosDbPartitionedStorageOptions>();
@@ -65,6 +64,7 @@ namespace PnPNotifier.Job
 
                     services.AddScoped<IStorage>((provider) => new CosmosDbPartitionedStorage(cosmosConfig, jsonSerializer));
                     services.AddScoped<NotificationsManager>();
+                    services.AddScoped<NotificationCardManager>();
                 });
             var host = builder.Build();
             using (host)
