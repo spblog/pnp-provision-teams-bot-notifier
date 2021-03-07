@@ -2,7 +2,7 @@
 using Microsoft.Bot.Builder.TraceExtensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using PnPNotifierBot.Config;
+using PnPNotifier.Common.Config;
 
 namespace PnPNotifierBot
 {

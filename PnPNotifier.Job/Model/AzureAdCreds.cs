@@ -7,5 +7,6 @@
         public string ClientId { get; set; }
         public string TenantId { get; set; }
         public string PfxPath { get; set; }
+        public string PfxPassword { get; set; }
     }
 }

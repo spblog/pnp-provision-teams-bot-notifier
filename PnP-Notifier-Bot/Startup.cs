@@ -7,11 +7,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
+using PnPNotifier.Common.Config;
 using PnPNotifier.Common.Notifications;
 using PnPNotifierBot.Cards.Handlers;
 using PnPNotifierBot.Cards.Managers;
 using PnPNotifierBot.Commands;
-using PnPNotifierBot.Config;
 
 namespace PnPNotifierBot
 {

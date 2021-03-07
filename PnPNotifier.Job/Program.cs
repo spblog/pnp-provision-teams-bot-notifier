@@ -9,6 +9,7 @@ using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Azure;
 using Newtonsoft.Json;
 using PnPNotifier.Common.Notifications;
+using PnPNotifier.Common.Config;
 
 namespace PnPNotifier.Job
 {
@@ -32,7 +33,14 @@ namespace PnPNotifier.Job
                 })
                 .ConfigureAppConfiguration((builderContext, config) =>
                 {
-                    config.AddJsonFile($"appsettings.{builderContext.HostingEnvironment.EnvironmentName}.json", optional: true).AddEnvironmentVariables();
+                    config
+                    .AddJsonFile($"appsettings.{builderContext.HostingEnvironment.EnvironmentName}.json", optional: true)
+                    .AddEnvironmentVariables();
+
+                    if (builderContext.HostingEnvironment.IsDevelopment())
+                    {
+                        config.AddUserSecrets<Program>();
+                    }
                 })
                 .ConfigureLogging((context, logBuilder) =>
                 {
@@ -43,6 +51,8 @@ namespace PnPNotifier.Job
                 .ConfigureServices((context, services) => {
                     services.Configure<AzureAdCreds>(context.Configuration.GetSection(AzureAdCreds.SectionName));
                     services.Configure<KeyVaultInfo>(context.Configuration.GetSection(KeyVaultInfo.SectionName));
+                    services.Configure<KeyVaultInfo>(context.Configuration.GetSection(KeyVaultInfo.SectionName));
+                    services.Configure<BotCredentials>(context.Configuration.GetSection(BotCredentials.SectionName));
 
                     var cosmosConfig = context.Configuration.GetSection("CosmosDb").Get<CosmosDbPartitionedStorageOptions>();
                     cosmosConfig.CompatibilityMode = false;

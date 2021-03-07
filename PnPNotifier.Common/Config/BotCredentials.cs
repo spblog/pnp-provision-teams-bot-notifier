@@ -1,4 +1,4 @@
-﻿namespace PnPNotifierBot.Config
+﻿namespace PnPNotifier.Common.Config
 {
     public class BotCredentials
     {
