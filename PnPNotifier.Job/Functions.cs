@@ -20,6 +20,7 @@ namespace PnPNotifier.Job
         private readonly AzureAdCreds _azureCreds;
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly NotificationCardManager _notificationCardManager;
+        private readonly string _templateName = "ContosoLanding.pnp";
 
         public Functions(
             IOptions<AzureAdCreds> azureOpts,
@@ -31,7 +32,7 @@ namespace PnPNotifier.Job
             _notificationCardManager = notificationCardManager;
         }
 
-        public async Task ProcessQueueMessage([QueueTrigger("pnp-drone")] Model.Site siteModel, ILogger logger)
+        public async Task ProcessQueueMessage([QueueTrigger("pnp-provision")] Model.Site siteModel, ILogger logger)
         {
             try
             {
@@ -45,7 +46,7 @@ namespace PnPNotifier.Job
                 clientContext.Load(web);
                 await clientContext.ExecuteQueryRetryAsync();
 
-                await _notificationCardManager.SendStartingCardAsync(web.Url, web.Title);
+                await _notificationCardManager.SendStartingCardAsync(web.Url, web.Title, _templateName);
                 var applyInfo = _notificationCardManager.CreateApplyingInfo();
 
                 Provision(web, applyInfo);
@@ -57,6 +58,7 @@ namespace PnPNotifier.Job
             catch (Exception ex)
             {
                 logger.LogError(new EventId(), ex, ex.Message);
+                await _notificationCardManager.SendErrorCardAsync(ex);
                 throw;
             }
         }
@@ -64,7 +66,7 @@ namespace PnPNotifier.Job
         private void Provision(Web web, ProvisioningTemplateApplyingInformation applyInfo)
         {
             var fileConnector = new FileSystemConnector(_hostingEnvironment.ContentRootPath, string.Empty);
-            var provider = new XMLOpenXMLTemplateProvider("ContosoDroneLanding.pnp", fileConnector);
+            var provider = new XMLOpenXMLTemplateProvider(_templateName, fileConnector);
 
             var template = provider.GetTemplates().ToList().First();
             template.Connector = provider.Connector;

@@ -1,0 +1,61 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.8/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.8",
+  "id": "ce75441d-24f9-49d4-8198-6eac3e172263",
+  "version": "1.0",
+  "packageName": "pnp-notifier",
+  "developer": {
+    "name": "Contoso",
+    "websiteUrl": "https://pnp-notifier-bot.azurewebsites.net",
+    "privacyUrl": "https://pnp-notifier-bot.azurewebsites.net/privacy.html",
+    "termsOfUseUrl": "https://pnp-notifier-bot.azurewebsites.net/tou.html"
+  },
+  "name": {
+    "short": "PnP Notifier",
+    "full": "PnP Notifier"
+  },
+  "description": {
+    "short": "Get notified about important events from PnP pipeline!",
+    "full": "Get notified about important events from PnP pipeline!"
+  },
+  "icons": {
+    "outline": "icon-outline.png",
+    "color": "icon-color.png"
+  },
+  "accentColor": "#D85028",
+  "configurableTabs": [],
+  "staticTabs": [],
+  "bots": [
+    {
+      "botId": "84beba17-674d-4241-9628-7d94293882a3",
+      "isNotificationOnly": false,
+      "scopes": [
+        "team"
+      ],
+      "commandLists": [
+        {
+          "scopes": [
+            "team"
+          ],
+          "commands": [
+            {
+              "title": "Configure PnP notifications",
+              "description": "Configures PnP provisioning process notifications for the current channel"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "connectors": [],
+  "composeExtensions": [],
+  "permissions": [
+    "identity",
+    "messageTeamMembers"
+  ],
+  "validDomains": [
+    "pnp-notifier-bot.azurewebsites.net"
+  ],
+  "showLoadingIndicator": false,
+  "isFullScreen": false
+}
