@@ -53,9 +53,4 @@
   <ItemGroup>
     <ProjectReference Include="..\PnPNotifier.Common\PnPNotifier.Common.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Update="Settings.job">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
 </Project>

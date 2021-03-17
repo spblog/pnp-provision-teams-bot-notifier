@@ -21,22 +21,25 @@ namespace PnPNotifier.Job
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly NotificationCardManager _notificationCardManager;
         private readonly string _templateName = "ContosoLanding.pnp";
+        private readonly ILogger<Functions> _logger;
 
         public Functions(
             IOptions<AzureAdCreds> azureOpts,
             IHostingEnvironment hostingEnvironment,
-            NotificationCardManager notificationCardManager)
+            NotificationCardManager notificationCardManager,
+            ILogger<Functions> logger)
         {
             _azureCreds = azureOpts.Value;
             _hostingEnvironment = hostingEnvironment;
             _notificationCardManager = notificationCardManager;
+            _logger = logger;
         }
 
-        public async Task ProcessQueueMessage([QueueTrigger("pnp-provision")] Model.Site siteModel, ILogger logger)
+        public async Task ProcessQueueMessage([QueueTrigger("pnp-provision")] Model.Site siteModel)
         {
             try
             {
-                logger.LogInformation($"Starting processing web {siteModel.WebUrl}");
+                _logger.LogInformation($"Starting processing web {siteModel.WebUrl}");
 
                 var authManager = CreateAuthManagerWithLocalCertificate();
 
@@ -53,11 +56,11 @@ namespace PnPNotifier.Job
 
                 await _notificationCardManager.SendSuccessCardAsync(web.Url);
 
-                logger.LogInformation("Finished");
+                _logger.LogInformation("Finished");
             }
             catch (Exception ex)
             {
-                logger.LogError(new EventId(), ex, ex.Message);
+                _logger.LogError(new EventId(), ex, ex.Message);
                 await _notificationCardManager.SendErrorCardAsync(ex);
                 throw;
             }

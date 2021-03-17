@@ -9,6 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PnPNotifier.Common", "PnPNo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PnPNotifier.Job", "PnPNotifier.Job\PnPNotifier.Job.csproj", "{4641D506-2326-4475-B6AB-C2DE015CAD5A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PS", "PS", "{E4604F80-5D42-4573-ADA4-24CE91227F4B}"
+	ProjectSection(SolutionItems) = preProject
+		PS\site-script.ps1 = PS\site-script.ps1
+		PS\siteDesign.ps1 = PS\siteDesign.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -1,0 +1,1 @@
+Add-PnPSiteDesign -Title "PnP Contoso Landing" -WebTemplate CommunicationSite -SiteScriptsIds "51ecf10f-66ea-4d06-8953-1eba3535ad68" -Description "Contoso landing template for communication site"

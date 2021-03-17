@@ -20,7 +20,6 @@ namespace PnPNotifier.Job
         {
             var builder = new HostBuilder();
             var environmentName = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
-
             builder
                 .UseEnvironment(string.IsNullOrEmpty(environmentName) ? EnvironmentName.Production : environmentName)
                 .ConfigureWebJobs(b =>

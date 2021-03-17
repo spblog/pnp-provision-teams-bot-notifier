@@ -4,6 +4,7 @@ using Microsoft.Bot.Connector.Authentication;
 using Microsoft.Bot.Schema;
 using Microsoft.Bot.Schema.Teams;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PnP.Framework.Provisioning.ObjectHandlers;
 using PnPNotifier.Common.Config;
@@ -30,12 +31,15 @@ namespace PnPNotifier.Job.Notifications
         private readonly NotificationsManager _notificationsManager;
         private Stopwatch _stopwatch;
         private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly ILogger<NotificationCardManager> _logger;
+
 
         public NotificationCardManager(
-            IOptions<BotCredentials> botOptions, 
+            IOptions<BotCredentials> botOptions,
             NotificationsManager notificationsManager,
             IHostingEnvironment hostingEnvironment,
-            IOptions<AzureAdCreds> azureOpts)
+            IOptions<AzureAdCreds> azureOpts,
+            ILogger<NotificationCardManager> logger)
         {
             _botCredentials = botOptions.Value;
             _conversationMap = new Dictionary<string, string>();
@@ -44,6 +48,7 @@ namespace PnPNotifier.Job.Notifications
             _notificationsManager = notificationsManager;
             _stopwatch = new Stopwatch();
             _hostingEnvironment = hostingEnvironment;
+            _logger = logger;
         }
 
         public async Task SendStartingCardAsync(string siteUrl, string siteName, string templateName)
@@ -65,23 +70,30 @@ namespace PnPNotifier.Job.Notifications
 
             foreach (var data in _notificationData)
             {
-                var client = new ConnectorClient(new Uri(data.ServiceUrl), GetMicrosoftAppCredentials(), new HttpClient());
-                var conversationParams = new ConversationParameters
+                try
                 {
-                    IsGroup = true,
-                    ChannelData = new TeamsChannelData
+                    var client = new ConnectorClient(new Uri(data.ServiceUrl), GetMicrosoftAppCredentials(), new HttpClient());
+                    var conversationParams = new ConversationParameters
                     {
-                        Channel = new ChannelInfo(data.ChannelId),
-                    },
-                    Bot = new ChannelAccount
-                    {
-                        Id = _botCredentials.MicrosoftAppId
-                    },
-                    TenantId = _azureCreds.TenantId,
-                    Activity = (Activity)MessageFactory.Attachment(thumbnailCard.ToAttachment())
-                };
-                var conversation = await client.Conversations.CreateConversationAsync(conversationParams);
-                _conversationMap.Add(data.ChannelId, conversation.Id);
+                        IsGroup = true,
+                        ChannelData = new TeamsChannelData
+                        {
+                            Channel = new ChannelInfo(data.ChannelId),
+                        },
+                        Bot = new ChannelAccount
+                        {
+                            Id = _botCredentials.MicrosoftAppId
+                        },
+                        TenantId = _azureCreds.TenantId,
+                        Activity = (Activity)MessageFactory.Attachment(thumbnailCard.ToAttachment())
+                    };
+                    var conversation = await client.Conversations.CreateConversationAsync(conversationParams);
+                    _conversationMap.Add(data.ChannelId, conversation.Id);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(new EventId(), ex, ex.Message);
+                }
             }
         }
 
@@ -111,30 +123,38 @@ namespace PnPNotifier.Job.Notifications
 
             foreach (var data in _notificationData)
             {
-                var client = new ConnectorClient(new Uri(data.ServiceUrl), GetMicrosoftAppCredentials(), new HttpClient());
-                var conversationParams = new ConversationParameters
+                try
                 {
-                    IsGroup = true,
-                    ChannelData = new TeamsChannelData
+                    var client = new ConnectorClient(new Uri(data.ServiceUrl), GetMicrosoftAppCredentials(), new HttpClient());
+                    var conversationParams = new ConversationParameters
                     {
-                        Channel = new ChannelInfo(data.ChannelId),
-                    },
-                    Bot = new ChannelAccount
-                    {
-                        Id = _botCredentials.MicrosoftAppId
-                    },
-                    TenantId = _azureCreds.TenantId,
-                    Activity = (Activity)MessageFactory.Attachment(thumbnailCard.ToAttachment())
-                };
-                var conversationId = _conversationMap[data.ChannelId];
-                var replyToId = _activityMap[data.ChannelId];
-                await client.Conversations.UpdateActivityAsync(conversationId, replyToId, conversationParams.Activity);
+                        IsGroup = true,
+                        ChannelData = new TeamsChannelData
+                        {
+                            Channel = new ChannelInfo(data.ChannelId),
+                        },
+                        Bot = new ChannelAccount
+                        {
+                            Id = _botCredentials.MicrosoftAppId
+                        },
+                        TenantId = _azureCreds.TenantId,
+                        Activity = (Activity)MessageFactory.Attachment(thumbnailCard.ToAttachment())
+                    };
+                    var conversationId = _conversationMap[data.ChannelId];
+                    var replyToId = _activityMap[data.ChannelId];
+                    await client.Conversations.UpdateActivityAsync(conversationId, replyToId, conversationParams.Activity);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(new EventId(), ex, ex.Message);
+                }
             }
         }
 
         public async Task SendErrorCardAsync(Exception ex)
         {
-            try {
+            try
+            {
                 _notificationData = await _notificationsManager.GetAllNotifcationsAsync();
                 _stopwatch.Stop();
 
@@ -160,24 +180,31 @@ namespace PnPNotifier.Job.Notifications
 
                 foreach (var data in _notificationData)
                 {
-                    var client = new ConnectorClient(new Uri(data.ServiceUrl), GetMicrosoftAppCredentials(), new HttpClient());
-                    var conversationParams = new ConversationParameters
+                    try
                     {
-                        IsGroup = true,
-                        ChannelData = new TeamsChannelData
+                        var client = new ConnectorClient(new Uri(data.ServiceUrl), GetMicrosoftAppCredentials(), new HttpClient());
+                        var conversationParams = new ConversationParameters
                         {
-                            Channel = new ChannelInfo(data.ChannelId),
-                        },
-                        Bot = new ChannelAccount
-                        {
-                            Id = _botCredentials.MicrosoftAppId
-                        },
-                        TenantId = _azureCreds.TenantId,
-                        Activity = (Activity)MessageFactory.Attachment(thumbnailCard.ToAttachment())
-                    };
-                    var conversationId = _conversationMap[data.ChannelId];
-                    var replyToId = _activityMap[data.ChannelId];
-                    await client.Conversations.UpdateActivityAsync(conversationId, replyToId, conversationParams.Activity);
+                            IsGroup = true,
+                            ChannelData = new TeamsChannelData
+                            {
+                                Channel = new ChannelInfo(data.ChannelId),
+                            },
+                            Bot = new ChannelAccount
+                            {
+                                Id = _botCredentials.MicrosoftAppId
+                            },
+                            TenantId = _azureCreds.TenantId,
+                            Activity = (Activity)MessageFactory.Attachment(thumbnailCard.ToAttachment())
+                        };
+                        var conversationId = _conversationMap[data.ChannelId];
+                        var replyToId = _activityMap[data.ChannelId];
+                        await client.Conversations.UpdateActivityAsync(conversationId, replyToId, conversationParams.Activity);
+                    }
+                    catch (Exception err)
+                    {
+                        _logger.LogError(new EventId(), err, err.Message);
+                    }
                 }
             }
             catch (Exception)
@@ -223,33 +250,40 @@ namespace PnPNotifier.Job.Notifications
 
             foreach (var notificationData in _notificationData)
             {
-                var client = new ConnectorClient(new Uri(notificationData.ServiceUrl), GetMicrosoftAppCredentials(), new HttpClient());
-                var conversationParams = new ConversationParameters
+                try
                 {
-                    IsGroup = true,
-                    ChannelData = new TeamsChannelData
+                    var client = new ConnectorClient(new Uri(notificationData.ServiceUrl), GetMicrosoftAppCredentials(), new HttpClient());
+                    var conversationParams = new ConversationParameters
                     {
-                        Channel = new ChannelInfo(notificationData.ChannelId),
-                    },
-                    Bot = new ChannelAccount
+                        IsGroup = true,
+                        ChannelData = new TeamsChannelData
+                        {
+                            Channel = new ChannelInfo(notificationData.ChannelId),
+                        },
+                        Bot = new ChannelAccount
+                        {
+                            Id = _botCredentials.MicrosoftAppId
+                        },
+                        TenantId = _azureCreds.TenantId,
+                        Activity = (Activity)MessageFactory.Attachment(thumbnailCard.ToAttachment())
+                    };
+
+                    var conversationId = _conversationMap[notificationData.ChannelId];
+
+                    if (_activityMap.ContainsKey(notificationData.ChannelId))
                     {
-                        Id = _botCredentials.MicrosoftAppId
-                    },
-                    TenantId = _azureCreds.TenantId,
-                    Activity = (Activity)MessageFactory.Attachment(thumbnailCard.ToAttachment())
-                };
-
-                var conversationId = _conversationMap[notificationData.ChannelId];
-
-                if (_activityMap.ContainsKey(notificationData.ChannelId))
-                {
-                    var replyToId = _activityMap[notificationData.ChannelId];
-                    await client.Conversations.UpdateActivityAsync(conversationId, replyToId, conversationParams.Activity);
+                        var replyToId = _activityMap[notificationData.ChannelId];
+                        await client.Conversations.UpdateActivityAsync(conversationId, replyToId, conversationParams.Activity);
+                    }
+                    else
+                    {
+                        var result = await client.Conversations.SendToConversationAsync(conversationId, conversationParams.Activity);
+                        _activityMap.Add(notificationData.ChannelId, result.Id);
+                    }
                 }
-                else
+                catch (Exception err)
                 {
-                    var result = await client.Conversations.SendToConversationAsync(conversationId, conversationParams.Activity);
-                    _activityMap.Add(notificationData.ChannelId, result.Id);
+                    _logger.LogError(new EventId(), err, err.Message);
                 }
             }
         }
