@@ -26,7 +26,7 @@ namespace PnPNotifier.Job
                 {
                     b
                     .AddAzureStorageCoreServices()
-                    .AddAzureStorage(c =>
+                    .AddAzureStorageQueues(c =>
                     {
                         c.MaxDequeueCount = 1;
                     });
